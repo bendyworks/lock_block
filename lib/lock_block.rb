@@ -11,8 +11,8 @@ module LockBlock
   end
 
   def decorate source
-    indent = source.match(/^(\s+)/)[0] || ""
-    h = indent + lock_tag(source)
-    "# lock do #{h}\n#{source}# lock end #{h}"
+    indent = source.match(/^(\s+)/) ? $1 : ''
+    h = lock_tag(source)
+    "#{indent}# lock do #{h}\n#{source}#{indent}# lock end #{h}"
   end
 end
