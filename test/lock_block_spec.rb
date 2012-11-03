@@ -1,7 +1,5 @@
 require 'minitest/autorun'
 require 'lock_block'
-include LockBlock
-
 
 code_block = <<EOT
 def foo x
@@ -38,58 +36,54 @@ code_block_resolved = <<EOT
 EOT
 
 describe LockBlock do
-  describe '#lock_tag' do
-    it 'handles empty input' do
-      lock_tag('').must_equal "97d170e1550eee4afc0af065b78cda302a97674c"
-    end
-
+  describe '#tag' do
     it 'ignores spacing differences' do
-      lock_tag('1+1').must_equal lock_tag('1 + 1')
+      LockBlock.tag('1+1').must_equal LockBlock.tag('1 + 1')
     end
 
     it 'respects constant differences' do
-      lock_tag('1+1').wont_be_same_as lock_tag('1+2')
+      LockBlock.tag('1+1').wont_be_same_as LockBlock.tag('1+2')
     end
 
     it 'respects differing comments' do
-      lock_tag('#hi').wont_be_same_as lock_tag('#bye')
+      LockBlock.tag('#hi').wont_be_same_as LockBlock.tag('#bye')
     end
 
     it 'ignores Ruby indentation' do
-      lock_tag(code_block).must_equal lock_tag(code_block_dedent)
+      LockBlock.tag(code_block).must_equal LockBlock.tag(code_block_dedent)
     end
   end
 
   describe '#decorate' do
     it 'wraps a block of code' do
       code = "1+1\n"
-      h = lock_tag code
+      h = LockBlock.tag code
       wrapped_code = "# lock do #{h}\n1+1\n# lock end #{h}"
-      decorate(code).must_equal wrapped_code
+      LockBlock.decorate(code).must_equal wrapped_code
     end
     it 'matches indentation' do
       code = "\t1+1\n"
-      h = lock_tag code
+      h = LockBlock.tag code
       wrapped_code = "\t# lock do #{h}\n\t1+1\n\t# lock end #{h}"
-      decorate(code).must_equal wrapped_code
+      LockBlock.decorate(code).must_equal wrapped_code
     end
     it 'leaves non-Ruby untouched' do
       code         = "It isn't Ruby, is it?\n"
-      expected_tag = lock_tag code
+      expected_tag = LockBlock.tag code
       wrapped_code = "# lock do #{expected_tag}\n#{code}# lock end #{expected_tag}"
-      decorate(code).must_equal wrapped_code
+      LockBlock.decorate(code).must_equal wrapped_code
     end
   end
 
   describe '#resolve' do
     it 'updates the hash on a block and leaves other lines untouched' do
-      resolve(code_block_outdated).must_equal code_block_resolved
+      LockBlock.resolve(code_block_outdated).must_equal code_block_resolved
     end
   end
 
   describe '#broken_locks' do
     it 'finds line numbers of lock blocks that are outdated' do
-      errs = broken_locks code_block_outdated
+      errs = LockBlock.broken_locks code_block_outdated
       errs.length.must_equal 2
       errs[0][:line].must_equal 2
       errs[1][:line].must_equal 6

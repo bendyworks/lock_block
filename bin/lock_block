@@ -1,16 +1,5 @@
 #!/usr/bin/env ruby
-require 'digest/sha1'
-require 'ripper'
+require 'lock_block'
 
 input = ARGF.read
-begin
-  # ignoring purely whitespace tokens
-  tokens = Ripper.tokenize(input).select { |t| t.gsub(/\s+/, "") != '' }
-  hash   = Digest::SHA1.hexdigest tokens.to_s
-  puts "# lock do  #{hash}"
-  puts input
-  puts "# lock end #{hash}"
-rescue SyntaxError
-  puts input
-  exit 1
-end
+puts LockBlock.decorate input

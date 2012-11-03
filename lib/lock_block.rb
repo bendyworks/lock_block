@@ -3,26 +3,26 @@ require 'ripper'
 require 'digest/sha1'
 
 module LockBlock
-  def decorate source
+  def LockBlock.decorate source
     indent = source.match(/^(\s+)/) ? $1 : ''
-    tag    = lock_tag source
+    tag    = tag source
     "#{indent}# lock do #{tag}\n#{source}#{indent}# lock end #{tag}"
   end
 
-  def resolve source
+  def LockBlock.resolve source
     tags(source).each do |tag|
-      resolved_tag = lock_tag innards(source, tag)
+      resolved_tag = tag innards(source, tag)
       source = update_tag source, tag, resolved_tag
     end
     source
   end
 
-  def broken_locks source
+  def LockBlock.broken_locks source
     broken = []
     source.lines.each_with_index do |line, number|
       if tags(line).any?
         got      = tags(line).first
-        expected = lock_tag innards(source, got)
+        expected = tag innards(source, got)
         if got != expected
           broken.push({line: number+1, expected: expected, got: got})
         end
@@ -31,22 +31,22 @@ module LockBlock
     broken
   end
 
-  def lock_tag source
+  def LockBlock.tag source
     tokens = Ripper.tokenize(source).select do |t|
       t.gsub(/\s+/, "") != ''
     end
     Digest::SHA1.hexdigest tokens.to_s
   end
 
-  def tags source
+  def LockBlock.tags source
     source.scan(/# lock do ([a-f0-9]{40})/).map &:first
   end
 
-  def update_tag source, old_tag, new_tag
+  def LockBlock.update_tag source, old_tag, new_tag
     source.gsub /# lock (do|end) #{old_tag}/, "# lock \\1 #{new_tag}"
   end
 
-  def innards source, tag
+  def LockBlock.innards source, tag
     match = source.match /# lock do #{tag}\n(.*?)# lock end #{tag}/m
     match ? match[1] : ''
   end
