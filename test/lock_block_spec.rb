@@ -15,6 +15,28 @@ x + 1
 end
 EOT
 
+code_block_outdated = <<EOT
+# stuff
+# lock do 0000000000000000000000000000000000000000
+1+1
+# lock end 0000000000000000000000000000000000000000
+# bother
+# lock do 0000000000000000000000000000000000000000
+1+2
+# lock end 0000000000000000000000000000000000000000
+EOT
+
+code_block_resolved = <<EOT
+# stuff
+# lock do 921fbda07b9630c541f486c666238d1c0d6384c8
+1+1
+# lock end 921fbda07b9630c541f486c666238d1c0d6384c8
+# bother
+# lock do 921fbda07b9630c541f486c666238d1c0d6384c8
+1+2
+# lock end 921fbda07b9630c541f486c666238d1c0d6384c8
+EOT
+
 describe LockBlock do
   describe '#lock_tag' do
     it 'handles empty input' do
@@ -33,7 +55,7 @@ describe LockBlock do
       lock_tag('#hi').wont_be_same_as lock_tag('#bye')
     end
 
-    it 'ignores indentation' do
+    it 'ignores Ruby indentation' do
       lock_tag(code_block).must_equal lock_tag(code_block_dedent)
     end
   end
@@ -50,6 +72,18 @@ describe LockBlock do
       h = lock_tag code
       wrapped_code = "\t# lock do #{h}\n\t1+1\n\t# lock end #{h}"
       decorate(code).must_equal wrapped_code
+    end
+    it 'leaves non-Ruby untouched' do
+      code         = "It isn't Ruby, is it?\n"
+      expected_tag = lock_tag code
+      wrapped_code = "# lock do #{expected_tag}\n#{code}# lock end #{expected_tag}"
+      decorate(code).must_equal wrapped_code
+    end
+  end
+
+  describe '#resolve' do
+    it 'updates the hash on a block and leaves other lines untouched' do
+      resolve(code_block_outdated).must_equal code_block_resolved
     end
   end
 end

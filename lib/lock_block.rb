@@ -12,7 +12,28 @@ module LockBlock
 
   def decorate source
     indent = source.match(/^(\s+)/) ? $1 : ''
-    h = lock_tag(source)
+    h = lock_tag source
     "#{indent}# lock do #{h}\n#{source}#{indent}# lock end #{h}"
+  end
+
+  def resolve source
+    tags(source).each do |tag|
+      resolved_tag = lock_tag innards(source, tag)
+      source = update_tag source, tag, resolved_tag
+    end
+    source
+  end
+
+  def tags source
+    source.scan(/# lock do ([a-f0-9]{40})/).map &:first
+  end
+
+  def update_tag source, old_tag, new_tag
+    source.gsub /# lock (do|end) #{old_tag}/, "# lock \\1 #{new_tag}"
+  end
+
+  def innards source, tag
+    match = source.match /# lock do #{tag}\n(.*?)# lock end #{tag}/m
+    match ? match[1] : ''
   end
 end
