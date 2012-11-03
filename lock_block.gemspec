@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = LockBlock::VERSION
   gem.authors       = ["Joe Nelson"]
   gem.email         = ["cred+github@begriffs.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Mark code blocks important, monitor them}
+  gem.summary       = %q{Provides command-line tool to annotate and check blocks of code}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
