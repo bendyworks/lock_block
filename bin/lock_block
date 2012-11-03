@@ -1,5 +1,24 @@
 #!/usr/bin/env ruby
 require 'lock_block'
+require 'trollop'
+
+opts = Trollop::options do
+  opt :lock,    "Annotate input with lock hash", default: true
+  opt :check,   "Check input for broken locks"
+  opt :resolve, "Update all lock tags in input"
+end
 
 input = ARGF.read
-puts LockBlock.decorate input
+if opts[:check]
+  errs = LockBlock.broken_locks input
+  if errs.any?
+    errs.each do |error|
+      puts [ARGF.path, error[:line], error[:got]].join ':'
+    end
+    exit 1
+  end
+elsif opts[:resolve]
+  puts LockBlock.resolve input
+else
+  puts LockBlock.lock input
+end

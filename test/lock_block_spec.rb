@@ -54,24 +54,24 @@ describe LockBlock do
     end
   end
 
-  describe '#decorate' do
+  describe '#lock' do
     it 'wraps a block of code' do
       code = "1+1\n"
       h = LockBlock.tag code
       wrapped_code = "# lock do #{h}\n1+1\n# lock end #{h}"
-      LockBlock.decorate(code).must_equal wrapped_code
+      LockBlock.lock(code).must_equal wrapped_code
     end
     it 'matches indentation' do
       code = "\t1+1\n"
       h = LockBlock.tag code
       wrapped_code = "\t# lock do #{h}\n\t1+1\n\t# lock end #{h}"
-      LockBlock.decorate(code).must_equal wrapped_code
+      LockBlock.lock(code).must_equal wrapped_code
     end
     it 'leaves non-Ruby untouched' do
       code         = "It isn't Ruby, is it?\n"
       expected_tag = LockBlock.tag code
       wrapped_code = "# lock do #{expected_tag}\n#{code}# lock end #{expected_tag}"
-      LockBlock.decorate(code).must_equal wrapped_code
+      LockBlock.lock(code).must_equal wrapped_code
     end
   end
 

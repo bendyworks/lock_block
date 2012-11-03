@@ -3,7 +3,7 @@ require 'ripper'
 require 'digest/sha1'
 
 module LockBlock
-  def LockBlock.decorate source
+  def LockBlock.lock source
     indent = source.match(/^(\s+)/) ? $1 : ''
     tag    = tag source
     "#{indent}# lock do #{tag}\n#{source}#{indent}# lock end #{tag}"
