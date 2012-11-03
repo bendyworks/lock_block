@@ -86,4 +86,13 @@ describe LockBlock do
       resolve(code_block_outdated).must_equal code_block_resolved
     end
   end
+
+  describe '#broken_locks' do
+    it 'finds line numbers of lock blocks that are outdated' do
+      errs = broken_locks code_block_outdated
+      errs.length.must_equal 2
+      errs[0][:line].must_equal 2
+      errs[1][:line].must_equal 6
+    end
+  end
 end

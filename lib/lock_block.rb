@@ -24,6 +24,20 @@ module LockBlock
     source
   end
 
+  def broken_locks source
+    broken = []
+    source.lines.each_with_index do |line, number|
+      if tags(line).any?
+        got      = tags(line).first
+        expected = lock_tag innards(source, got)
+        if got != expected
+          broken.push({line: number+1, expected: expected, got: got})
+        end
+      end
+    end
+    broken
+  end
+
   def tags source
     source.scan(/# lock do ([a-f0-9]{40})/).map &:first
   end
