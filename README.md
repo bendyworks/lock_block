@@ -1,8 +1,34 @@
 # Lock Block
 
-Mark sections of Ruby code as important. Check if these sections
-have changed.  The difference checking intelligently ignores code
-formatting.
+Lock block is a command line (and vim-enabled) tool to help you get
+a handle on your changing code.
+
+## What?
+
+You select a couple of lines of code, run the vim shortcut and then
+you get special comment blocks above and below your code block. If
+anything in that block changes, you'll know.
+
+![Locked Block](./doc/locked_block.png "Locked Block")
+
+## Why?
+
+*Comments lie* - comments tend to drift out of sync with the code
+that they are supposed to be describing. But *why* does that happen?
+Invariably, it is when we change some code, but because we aren't
+*forced* to change the comments, they succumb to bit-rot. A Lock
+Block surrounding the code and comments guarantees that you have
+to address that whole section of code before you can commit.
+
+*Tricky code* - I know, it is a sure sign that the code should be
+refactored, but sometimes you have to leave in some grungy (but
+very likely correct) code for a while. You can surround it in a
+Lock Block to make sure that if it is touched, the would-be commiter
+will know.
+
+*Testing* - make sure that that your [legacy
+code](http://www.amazon.com/Working-Effectively-Legacy-Michael-Feathers/dp/0131177052/)
+stays put while you get it under test.
 
 ## Usage
 
