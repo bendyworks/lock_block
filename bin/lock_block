@@ -6,9 +6,11 @@ opts = Trollop::options do
   opt :lock,    "Annotate input with lock hash", default: true
   opt :check,   "Check input for broken locks"
   opt :resolve, "Update all lock tags in input"
+  opt :guard,   "Path to repo which will be guarded with pre-commit hook", type: :string
 end
 
-input = ARGF.read
+input = ARGF.read if !opts[:guard]
+
 if opts[:check]
   errs = LockBlock.broken_locks input
   if errs.any?
@@ -19,6 +21,17 @@ if opts[:check]
   end
 elsif opts[:resolve]
   puts LockBlock.resolve input
+elsif opts[:guard]
+  repo       = opts[:guard]
+  repo_hooks = File.absolute_path File.join(repo, '.git', 'hooks')
+  unless File.exists? repo_hooks
+    puts "Guard error: '#{repo}' is not the path of a git repo."
+    exit 1
+  end
+  here        = File.dirname File.expand_path(__FILE__)
+  hook_source = File.absolute_path File.join(here, '..', 'lib', 'git', 'pre-commit')
+  File.symlink hook_source, File.join(repo_hooks, 'pre-commit')
+  puts "Added pre-commit hook to #{repo}"
 else
   puts LockBlock.lock input
 end
