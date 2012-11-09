@@ -28,6 +28,10 @@ If a file is not specified, the program will read from STDIN.
     <td>--resolve, -r</td>
     <td>Update tags in annotation to mark blocks as up to date.</td>
   </tr>
+  <tr>
+    <td>--guard, -g path-to-repo</td>
+    <td>Installs pre-commit hook to repo to prevent committing broken locks.</td>
+  </tr>
 </tbody>
 </table>
 
