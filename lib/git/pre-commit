@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# Checks for out-of-date locks
+
+locks=$(git diff --cached --name-only | xargs -L1 -I@ git show :@ | lock_block -c | cut -d: -f3)
+
+if [[ ! -z "${locks[@]}" ]]; then
+  echo "Error: The following locks are out of date:"
+  for lock in $locks; do
+    grep -nHr "do $lock" .
+  done
+  exit 1
+fi
