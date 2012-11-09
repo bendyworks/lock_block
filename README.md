@@ -9,7 +9,7 @@ You select a couple of lines of code, run the vim shortcut and then
 you get special comment blocks above and below your code block. If
 anything in that block changes, you'll know.
 
-![Locked Block](https://raw.github.com/twopoint718/lock_block/master/doc/locked_block.png "Locked Block")
+![Locked Block](lock_block/raw/master/doc/locked_block.png "Locked Block")
 
 ## Why?
 
