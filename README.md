@@ -9,7 +9,7 @@ You select a couple of lines of code, run the vim shortcut and then
 you get special comment blocks above and below your code block. If
 anything in that block changes, you'll know.
 
-![Locked Block](./doc/locked_block.png "Locked Block")
+![Locked Block](https://raw.github.com/twopoint718/lock_block/master/doc/locked_block.png "Locked Block")
 
 ## Why?
 
@@ -72,7 +72,7 @@ following to your `~/.vimrc`:
     command! -nargs=1 LBCheck call LockBlockCheck(<f-args>)
     " Check for broken locks in current file
     nmap <leader>lc :LBCheck %<CR>
-    
+
     " Lock selected block
     vmap <silent> <Leader>ll !lock_block<CR>
     " Resolved selected blocks
