@@ -6,7 +6,7 @@ require 'lock_block/version'
 Gem::Specification.new do |gem|
   gem.name                  = "lock_block"
   gem.version               = LockBlock::VERSION
-  gem.authors               = ["Joe Nelson"]
+  gem.authors               = ["Joe Nelson", "Ryland Herrick", "Chris Wilson"]
   gem.email                 = ["cred+github@begriffs.com"]
   gem.description           = %q{Mark code blocks important, monitor them}
   gem.summary               = %q{Provides command-line tool to annotate and check blocks of code}
