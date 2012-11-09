@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# Checks for out-of-date/broken locks
+
+index_files=("`git diff --cached --name-only`")
+
+for file in $index_files; do
+  bad_lock="`git show :$file | lock_block -c | cut -d: -f2-`"
+  if [[ -n $bad_lock ]]; then
+    bad_exit=true
+    locks=("${locks[@]} $file:$bad_lock")
+  fi
+done
+
+if [[ -n $bad_exit ]]; then
+  echo -e "The following locks are broken:\n"
+  for lock in $locks; do
+    echo "  $lock"
+  done
+  echo -e "\nPlease fix them before committing."
+  exit 1
+fi
