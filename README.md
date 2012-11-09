@@ -5,11 +5,39 @@ a handle on your changing code.
 
 ## What?
 
-You select a couple of lines of code, run the vim shortcut and then
-you get special comment blocks above and below your code block. If
-anything in that block changes, you'll know.
+You select a couple of lines of code and tell Lock Block to tag those
+lines. Lock Block inserts special comment blocks above and below your selection.
 
+By LockBlocking the lines, you are flagging that code as requiring special attention.
+You are saying, “Don’t commit this without making sure it’s OK.”
+
+The magic is that each pair of tags has a hashcode generated from all of the characters
+in the lines between the tags. <strong>Except.</strong> And this is important: the hash
+is not generated until logically non-significant whitespace has been removed
+from that content. Blank lines, indentation (of non-line-oriented code), and sequences of
+multiple spaces can all be edited without changing the generated hashcode.
+
+Lock Block can detect when content has been edited by simply recomputing its hashcode and
+comparing that with the hashcode recorded in the tags.
+
+Lock Block can be used deliberately to search for, and fix, out-of-rev hashcodes. Much more
+seriously, Lock Block can be configured as an interceptor to prevent git commits from
+completing when an out-of-rev hashcode is detected.
+
+What does a commit tag look like?
 ![Locked Block](lock_block/raw/master/doc/locked_block.png "Locked Block")
+
+Things to know about Lock Blocks:
+<ul>
+<li>They are <em>pairwise independent</em>. No set of tags has any logical
+  relationship to any other set of tags.</li>
+<li> They can be nested, overlapped, or separated by intervening lines.
+  This is not like HTML's nested structure.</li>
+<li>Tags can be deleted by ordinary editing. However, it's important to remember that
+  orphaned start or end tags are treated as a serious problem, and Lock Block will
+  pester you without mercy until you fix that.</li>
+</ul>
+
 
 ## Why?
 
