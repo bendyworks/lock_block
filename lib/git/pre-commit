@@ -5,10 +5,12 @@
 index_files=("`git diff --cached --name-only`")
 
 for file in $index_files; do
-  bad_lock="`git show :$file | lock_block -c | cut -d: -f2-`"
+  bad_lock="`git show :$file | lock_block -c | cut -d: -f3`"
   if [[ -n $bad_lock ]]; then
     bad_exit=true
-    locks=("${locks[@]} $file:$bad_lock")
+    # lock_block operates on staged content; we want line numbers for physical files
+    line="`grep -n \"lock do $bad_lock\" $file | cut -d: -f1`"
+    locks=("${locks[@]} $file:$line:$bad_lock")
   fi
 done
 
