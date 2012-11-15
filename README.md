@@ -1,4 +1,4 @@
-# Lock Block
+![Logo](lock_block/raw/master/doc/header.png "Logo")
 
 Lock block is a command line (and vim-enabled) tool to help you get
 a handle on your changing code.
@@ -128,3 +128,19 @@ This will give you three commands:
   </tr>
 </tbody>
 </table>
+
+## Credits
+
+Thank you, [contributors](lock_block/graphs/contributors)!
+
+![Bendyworks](http://bendyworks.com/assets/bendyworks_logo.png)
+
+Lock Block is maintained by [Bendyworks, Inc](http://bendyworks.com).
+
+## License
+
+Lock Block is Copyright © 2012 Joe Nelson and Bendyworks, Inc. It
+is free software, and may be redistributed under the terms specified
+in the LICENSE file.
+
+![Footer](lock_block/raw/master/doc/bendyworks_github_footer.png "Footer")
