@@ -1,4 +1,4 @@
-![Logo](lock_block/raw/master/doc/header.png "Logo")
+![Logo](doc/header.png "Logo")
 
 Lock block is a command line (and vim-enabled) tool to help you get
 a handle on your changing code.
@@ -25,7 +25,7 @@ seriously, Lock Block can be configured as an interceptor to prevent git commits
 completing when an out-of-rev hashcode is detected.
 
 What does a commit tag look like?
-![Locked Block](lock_block/raw/master/doc/locked_block.png "Locked Block")
+![Locked Block](doc/locked_block.png "Locked Block")
 
 Things to know about Lock Blocks:
 <ul>
@@ -143,4 +143,4 @@ Lock Block is Copyright © 2012 Joe Nelson and Bendyworks, Inc. It
 is free software, and may be redistributed under the terms specified
 in the LICENSE file.
 
-![Footer](lock_block/raw/master/doc/bendyworks_github_footer.png "Footer")
+![Footer](doc/bendyworks_github_footer.png "Footer")
